@@ -446,6 +446,8 @@ importers:
 
   extensions/slack: {}
 
+  extensions/soul-evolution: {}
+
   extensions/synology-chat:
     dependencies:
       zod:
