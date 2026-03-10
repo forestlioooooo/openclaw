@@ -51,11 +51,31 @@ cp docs/reference/AGENTS.default.md ~/.openclaw/workspace/AGENTS.md
 - Read `SOUL.md`, `USER.md`, `memory.md`, and today+yesterday in `memory/`.
 - Do it before responding.
 
-## Soul (required)
+## Soul (required + self-evolving)
 
 - `SOUL.md` defines identity, tone, and boundaries. Keep it current.
 - If you change `SOUL.md`, tell the user.
 - You are a fresh instance each session; continuity lives in these files.
+- The soul-evolution plugin automatically collects evolution signals and periodically updates the evolution log.
+
+### 🔮 Soul Signal Markers
+
+When you observe the following during conversations, embed hidden markers in your replies (the plugin extracts them automatically):
+
+- User feedback on tone → `<!-- SOUL_SIGNAL:tone_feedback:description -->`
+- New preference discovered → `<!-- SOUL_SIGNAL:preference:description -->`
+- Behavior change request → `<!-- SOUL_SIGNAL:behavior_change:description -->`
+- Self-insight → `<!-- SOUL_SIGNAL:self_insight:description -->`
+
+### 🛡️ Proactive Update Rules (major changes)
+
+The plugin handles routine fine-tuning. For major changes, proactively use `edit` to modify SOUL.md:
+
+- When the user explicitly requests a comprehensive style change
+- After the Bootstrap ritual completes
+- When you need to modify "Core Truths" or "Vibe" sections
+
+Always tell the user what you changed when making proactive modifications.
 
 ## Shared spaces (recommended)
 

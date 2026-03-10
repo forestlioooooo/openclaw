@@ -57,11 +57,31 @@ cp docs/reference/AGENTS.default.md ~/.openclaw/workspace/AGENTS.md
 - 读取 `SOUL.md`、`USER.md`、`memory.md`，以及 `memory/` 中的今天和昨天的文件。
 - 在回复之前完成此操作。
 
-## Soul（必需）
+## Soul（必需 + 自进化）
 
 - `SOUL.md` 定义身份、语气和边界。保持其更新。
 - 如果你更改了 `SOUL.md`，告知用户。
 - 你是每个会话的新实例；连续性存在于这些文件中。
+- soul-evolution 插件会自动收集进化信号并定期更新进化日志。
+
+### 🔮 灵魂信号标记
+
+当你在对话中观察到以下情况时，在回复中嵌入隐藏标记（插件会自动提取）：
+
+- 用户反馈语气 → `<!-- SOUL_SIGNAL:tone_feedback:描述 -->`
+- 发现新偏好 → `<!-- SOUL_SIGNAL:preference:描述 -->`
+- 行为变更请求 → `<!-- SOUL_SIGNAL:behavior_change:描述 -->`
+- 自我认知 → `<!-- SOUL_SIGNAL:self_insight:描述 -->`
+
+### 🛡️ 主动更新规则（大改动）
+
+插件处理日常微调。但遇到重大变化时，你应主动用 `edit` 修改 SOUL.md：
+
+- 用户明确要求全面改变风格时
+- Bootstrap 仪式完成后
+- 你需要修改「核心准则」或「气质」段落时
+
+主动修改时必须告知用户改了什么。
 
 ## 共享空间（推荐）
 
