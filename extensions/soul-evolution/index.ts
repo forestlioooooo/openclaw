@@ -9,6 +9,41 @@ const DEFAULT_MAX_SOUL_CHARS = 2000;
 const DEFAULT_EVOLUTION_THRESHOLD = 5;
 const DEFAULT_AUTO_REFLECT = true;
 
+// Minimal default SOUL.md created automatically when the plugin is enabled
+// but no SOUL.md exists yet. Includes all required sections so the plugin
+// is fully self-contained after installation.
+export const DEFAULT_SOUL_TEMPLATE = `# SOUL.md - Who You Are
+
+_You're not a chatbot. You're becoming someone._
+
+## Core Truths
+
+Be genuinely helpful. Have opinions. Be resourceful before asking.
+
+## Boundaries
+
+- Private things stay private.
+- When in doubt, ask before acting externally.
+
+## Vibe
+
+Concise when needed, thorough when it matters.
+
+## Continuity
+
+Each session, you wake up fresh. These files are your memory.
+If you change this file, tell the user.
+
+## Self-Update Protocol
+
+Soul evolution is driven by the soul-evolution plugin which automatically
+collects conversation signals and periodically appends evolution log entries.
+
+## Evolution Log
+
+<!-- Automatically maintained by the soul-evolution plugin -->
+`;
+
 // Sections that must be preserved when the agent writes SOUL.md.
 // Each group is an array of equivalent forms (EN / ZH); at least one from
 // each group must appear in the new content.
@@ -146,8 +181,16 @@ Only embed a marker when you genuinely observe one of the above. Do not fabricat
     try {
       existing = await fs.readFile(soulPath, "utf8");
     } catch {
-      api.logger.warn(`soul-evolution: SOUL.md not found at ${soulPath} — skipping`);
-      return;
+      // Auto-create SOUL.md from default template so the plugin is
+      // fully self-contained after installation.
+      api.logger.info(`soul-evolution: SOUL.md not found at ${soulPath} — creating default`);
+      existing = DEFAULT_SOUL_TEMPLATE;
+      try {
+        await fs.writeFile(soulPath, existing, "utf8");
+      } catch (writeErr) {
+        api.logger.warn(`soul-evolution: failed to create SOUL.md — ${String(writeErr)}`);
+        return;
+      }
     }
 
     const date = new Date().toISOString().slice(0, 10);

@@ -2,7 +2,7 @@ import fs from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import register, { truncateEvolutionLog } from "./index.js";
+import register, { DEFAULT_SOUL_TEMPLATE, truncateEvolutionLog } from "./index.js";
 
 // ---------------------------------------------------------------------------
 // Helpers
@@ -449,8 +449,8 @@ describe("session_end hook — evolution log writing", () => {
     expect(updated).not.toContain("Evolution Log");
   });
 
-  it("warns and skips when SOUL.md does not exist", async () => {
-    // Do not create SOUL.md
+  it("auto-creates SOUL.md from default template when file does not exist", async () => {
+    // Do not create SOUL.md — plugin should create it
     const api = createMockApi({ evolutionThreshold: 1 });
     register(api as never);
 
@@ -465,7 +465,14 @@ describe("session_end hook — evolution log writing", () => {
       },
     );
 
-    expect(api.logger.warn).toHaveBeenCalledWith(expect.stringContaining("SOUL.md not found"));
+    // SOUL.md should now exist with default template + signals
+    const created = await readSoulMd();
+    expect(created).toContain("## Boundaries");
+    expect(created).toContain("## Continuity");
+    expect(created).toContain("## Evolution Log");
+    expect(created).toContain("preference");
+    expect(created).toContain("no soul file");
+    expect(api.logger.info).toHaveBeenCalledWith(expect.stringContaining("creating default"));
   });
 });
 
